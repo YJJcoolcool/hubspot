@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Controller</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="Free Web tutorials">
+        <meta name="keywords" content="HTML, CSS, JavaScript">
+        <meta name="author" content="John Doe">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <style>
+            html, body{
+                margin: none;
+                padding: none;
+                overscroll-behavior-y: contain;
+            }
+            *{
+                font-family: Arial, Helvetica, sans-serif;
+                user-select: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Controller</h1>
+        <h2 id="coords">0, 0</h2>
+        <script>
+            var socket = io();
+
+            document.onmousedown = mouseDown;
+            document.ontouchstart = mouseDownTouch;
+
+            var originalPos = [0,0]
+            var newPos = [0,0]
+            var change = [0,0]
+
+            function mouseDown(e){
+                originalPos=[e.clientX,e.clientY]
+                document.onmouseup = closeDrag;
+                document.onmousemove = mouseMove;
+            }
+
+            function mouseDownTouch(e){
+                var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+                var touch = evt.touches[0] || evt.changedTouches[0];
+                originalPos = [Math.round(touch.pageX), Math.round(touch.pageY)]
+                document.ontouchend = closeDragTouch;
+                document.ontouchmove = mouseMoveTouch;
+            }
+
+            function mouseMove(e){
+                newPos = [e.clientX,e.clientY]
+                change = [newPos[0]-originalPos[0],newPos[1]-originalPos[1]]
+                originalPos = [e.clientX,e.clientY]
+                document.getElementById("coords").innerHTML=change
+                var message = {changepos:change}
+                $.post(document.URL+"post", message)
+            }
+
+            function mouseMoveTouch(e){
+                var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+                var touch = evt.touches[0] || evt.changedTouches[0];
+                newPos = [Math.round(touch.pageX), Math.round(touch.pageY)]
+                change = [newPos[0]-originalPos[0],newPos[1]-originalPos[1]]
+                originalPos = [Math.round(touch.pageX), Math.round(touch.pageY)]
+                document.getElementById("coords").innerHTML=change
+                var message = {changepos:change}
+                $.post(document.URL+"post", message)
+            }
+
+            function closeDrag(){
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+
+            function closeDragTouch(){
+                document.ontouchend = null;
+                document.ontouchmove = null;
+            }
+        </script>
+    </body>
+</html>
