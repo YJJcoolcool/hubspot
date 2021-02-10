@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="./server.js"></script>
+        <style>
+            html, body{
+                margin: none;
+                padding: none;
+                overflow: hidden;
+            }
+            *{
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            #header{
+                transition: all 0.3s;
+            }
+            #mouse{
+                position: absolute;
+                left: 20px;
+                top: 80px;
+            }
+            #apps-container{
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+            }
+            .app-column{
+                display: flex;
+                flex-direction: column;
+            }
+            .app{
+                width: 320px;
+                height: 180px;
+                background-color: gray;
+                border-radius: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 id="header">Server</h1>
+        <div id="apps-container">
+            <div class="app-column">
+                <div class="app">
+                </div>
+            </div>
+        </div>
+        <svg id="mouse" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-up-left" width="60" height="60" viewBox="0 0 24 24" stroke-width="2" stroke="#ff0000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <line x1="7" y1="7" x2="17" y2="17" />
+            <polyline points="16 7 7 7 7 16" />
+        </svg>
+    </body>
+</html>
