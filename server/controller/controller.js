@@ -1,7 +1,10 @@
 var socket = io();
 
+var sid=0;
 socket.on('connect', () => {
     console.log("Connected to backend server.")
+    sid = Math.floor((Math.random() * 1000) + 1);
+    socket.emit("controller-connect",sid);
 });
 
 document.onmousedown = mouseDown;
@@ -30,8 +33,7 @@ function mouseMove(e){
     change = [newPos[0]-originalPos[0],newPos[1]-originalPos[1]]
     originalPos = [e.clientX,e.clientY]
     document.getElementById("coords").innerHTML=change
-    var message = {changepos:change}
-    $.post(document.URL+"post", message)
+    moveCursor(change[0], change[1])
 }
 
 function mouseMoveTouch(e){
@@ -41,7 +43,11 @@ function mouseMoveTouch(e){
     change = [newPos[0]-originalPos[0],newPos[1]-originalPos[1]]
     originalPos = [Math.round(touch.pageX), Math.round(touch.pageY)]
     document.getElementById("coords").innerHTML=change
-    var message = {changepos:change}
+    moveCursor(change[0], change[1])
+}
+
+function moveCursor(X,Y){
+    var message = {destination: "server", command: "movecursor", content: [X,Y]}
     $.post(document.URL+"post", message)
 }
 

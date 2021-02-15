@@ -12,11 +12,16 @@ app.get('/messages', (req,res)=>{
     res.send("hello")
 })
 app.post('/controller/post', (req,res)=>{
-    //console.log(req.body['changepos'])
-    io.emit('updatemouse', req.body['changepos'])
+    //console.log(req.body)
+    if (req.body["destination"]=="server"){
+        io.emit("server",req.body)
+    }
     res.sendStatus(200)
 })
 io.on('connection', (socket) => {
+    console.log("A user connected.")
+})
+io.on('controller-connect', (socket) => {
     console.log("A user connected.")
 })
 var server = http.listen(80, ()=>{

@@ -1,6 +1,10 @@
 var socket = io();
 
-socket.on('updatemouse', changeMouse);
+socket.on('server', (body)=>{
+    if (body["command"]=="movecursor") {
+        moveCursor(body["content"])
+    }
+});
 
 socket.on('connect', () => {
     console.log("Connected to backend server.")
@@ -8,7 +12,7 @@ socket.on('connect', () => {
 
 pos=[20,80];
 
-function changeMouse(changePos){
+function moveCursor(changePos){
     pos=[pos[0]+parseInt(changePos[0]), pos[1]+parseInt(changePos[1])];
     if (pos[0]<0){
         pos[0]=0;
