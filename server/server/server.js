@@ -3,6 +3,8 @@ var socket = io();
 socket.on('server', (body)=>{
     if (body["command"]=="movecursor") {
         moveCursor(body["content"])
+    } else {
+        console.error("SOCKET ERROR: Command not recognised.")
     }
 });
 
