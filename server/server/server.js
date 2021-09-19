@@ -1,3 +1,17 @@
+$(document).ready(function(){
+    $.ajax({
+        type: "GET",
+        url: "startup.html",
+        dataType: "HTML",
+        success: function (response) {
+            document.body.innerHTML = response;
+        },
+        error: function (obj, textStatus, errorThrown) {
+            console.log("Error "+textStatus+": "+errorThrown);
+        }
+    });
+})
+
 var socket = io();
 
 socket.on('server', (body)=>{
