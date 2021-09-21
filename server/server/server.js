@@ -1,10 +1,10 @@
 $(document).ready(function(){
     $.ajax({
         type: "GET",
-        url: "startup.html",
+        url: "/ipaddress",
         dataType: "HTML",
         success: function (response) {
-            document.body.innerHTML = response;
+            document.querySelector('#ipaddr').innerHTML = response;
         },
         error: function (obj, textStatus, errorThrown) {
             console.log("Error "+textStatus+": "+errorThrown);
