@@ -8,11 +8,12 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="/assets/js/jquery-3.6.0.min.js"></script>
     <script src="server.js"></script>
+    <script src="/assets/js/qrcode.min.js"></script>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id='startup'>
+    <div class="flexcenter" id='startup'>
         <div style="display:none">
             <h1>Loading...</h1>
             <br>
@@ -21,10 +22,15 @@
                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
             </div>
         </div>
-        <div class="container">
-            <h1>Welcome!</h1>
+        <div class="container flexcenter" id='connect'>
+            <div class="flexcenter flex-row p-3">
+                <h1 class="me-2">Join using the QR code, or open your web browser and go to: <b><span id='ipaddr'></span></b></h1>
+                <div id="qrcode" class="flexcenter"></div>
+            </div>
             <br>
-            <h3>Connect to the server by scanning the QR code below, or open your web browser and go to: <span id='ipaddr'></span></h3>
+            <div id="playerlist">
+                <h3>Your name will appear here when you connect</h3>
+            </div>
         </div>
     </div>
 </body>

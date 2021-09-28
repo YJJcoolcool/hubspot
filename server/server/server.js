@@ -5,6 +5,7 @@ $(document).ready(function(){
         dataType: "HTML",
         success: function (response) {
             document.querySelector('#ipaddr').innerHTML = response;
+            new QRCode(document.getElementById("qrcode"), {text:"http://"+response,width: 128, height: 128});
         },
         error: function (obj, textStatus, errorThrown) {
             console.log("Error "+textStatus+": "+errorThrown);

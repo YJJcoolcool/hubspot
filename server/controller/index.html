@@ -1,33 +1,37 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Controller</title>
-        <meta charset="UTF-8">
-        <meta name="description" content="Free Web tutorials">
-        <meta name="keywords" content="HTML, CSS, JavaScript">
-        <meta name="author" content="John Doe">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="./controller.js"></script>
-        <style>
-            html, body{
-                margin: none;
-                padding: none;
-                overscroll-behavior-y: contain;
-                cursor: default;
-            }
-            html:active{
-                cursor: grab;
-            }
-            *{
-                font-family: Arial, Helvetica, sans-serif;
-                user-select: none;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Controller</h1>
-        <h2 id="coords">0, 0</h2>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controller</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="server.js"></script>
+    <script src="/assets/js/qrcode.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="flexcenter" id='startup'>
+        <div style="display:none">
+            <h1>Loading...</h1>
+            <br>
+            <h3>Some text here</h3>
+            <div class="progress" style="width: 50%; max-width: 400px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+            </div>
+        </div>
+        <div class="container flexcenter" id='connect'>
+            <div class="flexcenter flex-row p-3">
+                <h1 class="me-2">Join using the QR code, or open your web browser and go to: <b><span id='ipaddr'></span></b></h1>
+                <div id="qrcode" class="flexcenter"></div>
+            </div>
+            <br>
+            <div id="playerlist">
+                <h3>Your name will appear here when you connect</h3>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
