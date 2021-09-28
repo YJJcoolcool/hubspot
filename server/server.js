@@ -4,9 +4,12 @@ const app = express();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
 
+let connectedplayers = {};
+
 console.log(__dirname)
 app.use(express.static(__dirname))
 app.use(bodyParser.urlencoded())
+app.use(express.urlencoded({extended: true}))
 
 app.get('/messages', (req,res)=>{
     res.send("hello")
@@ -14,8 +17,16 @@ app.get('/messages', (req,res)=>{
 app.get('/ipaddress', (req,res)=>{
     res.send(results['Wi-Fi'][0])
 })
-app.post('/controller/post', (req,res)=>{
-    //console.log(req.body)
+app.post('/client/post', (req,res)=>{
+    if (typeof req.body.username!=='undefined'){ // Handle username requests
+        if (req.body.username in connectedplayers){
+            return res.send("1")
+        } else {
+            connectedplayers[req.body.username] = "H";
+            io.emit("server-addusername",req.body.username)
+            return res.send("0")
+        }
+    }
     if (req.body["destination"]=="server"){
         io.emit("server",req.body)
     }
@@ -31,7 +42,7 @@ var server = http.listen(80, ()=>{
     console.log("Server is listening on port "+server.address().port)
 });
 
-// IP address
+// Get IP address and send to server frontend
 const { networkInterfaces } = require('os');
 
 const nets = networkInterfaces();

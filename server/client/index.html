@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controller</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="controller.js"></script>
+    <script src="/assets/js/qrcode.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <style>
+        body,html{
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .full{
+            width: 100%;
+            height: 100%;
+            background-color: #2ab8e4;
+        }
+        .flexcenter{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .full div {
+            border-radius: 5px;
+            padding: 20px;
+        }
+        form, input {
+            width: 90%;
+            text-align: center;
+            border-radius: 2px;
+            font-weight: bold;
+            padding: 5px;
+        }
+        input[type='text'] {
+            border: 1px solid gray;
+        }
+        input[type='submit'] {
+            border: none;
+        }
+        form *{
+            margin: 10px 0;
+        }
+        #error {
+            display: none;
+            padding: 10px;
+            border: 3px solid #e9a2a1;
+        }
+    </style>
+</head>
+<body>
+    <div class="full flexcenter">
+        <h1>Welcome!</h1>
+        <div class="flexcenter bg-light">
+            <h3>Enter a username to start!</h3>
+            <div id="error" class="bg-danger text-light"></div>
+            <form method="POST" class="flexcenter" id="login">
+                <input name="username" id="uname" type="text" min="3" max="20" placeholder="Username" onkeydown="document.querySelector('#error').style.display='none'">
+                <input type="submit" value="Ok, go!" class="bg-dark text-light">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -22,6 +22,13 @@ socket.on('server', (body)=>{
         console.error("SOCKET ERROR: Command not recognised.")
     }
 });
+socket.on("server-addusername", (body)=>{
+    console.log(body)
+    let element = document.createElement("p");
+    element.innerHTML = body;
+    element.id = body;
+    document.querySelector("#playerlist-list").prepend(element)
+});
 
 socket.on('connect', () => {
     console.log("Connected to backend server.")
