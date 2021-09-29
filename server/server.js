@@ -23,7 +23,7 @@ app.post('/client/post', (req,res)=>{
             return res.send("1")
         } else {
             connectedplayers[req.body.username] = "H";
-            io.emit("server-addusername",req.body.username)
+            io.emit("server-updateplayers",connectedplayers)
             return res.send("0")
         }
     }
@@ -33,7 +33,10 @@ app.post('/client/post', (req,res)=>{
     res.sendStatus(200)
 })
 io.on('connection', (socket) => {
-    console.log("A user connected.")
+    console.log("Device connected.")
+    socket.on('get-connectedplayers', ()=>{
+        io.emit('give-connectedplayers',connectedplayers)
+    })
 })
 io.on('controller-connect', (socket) => {
     console.log("A user connected.")

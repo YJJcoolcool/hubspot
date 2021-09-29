@@ -1,4 +1,8 @@
+let socket = io();
+
 $(document).ready(function(){
+    socket.emit('get-connectedplayers')
+    console.log("Ok")
     $.ajax({
         type: "GET",
         url: "/ipaddress",
@@ -13,8 +17,6 @@ $(document).ready(function(){
     });
 })
 
-var socket = io();
-
 socket.on('server', (body)=>{
     if (body["command"]=="movecursor") {
         moveCursor(body["content"])
@@ -22,12 +24,30 @@ socket.on('server', (body)=>{
         console.error("SOCKET ERROR: Command not recognised.")
     }
 });
-socket.on("server-addusername", (body)=>{
-    console.log(body)
-    let element = document.createElement("p");
-    element.innerHTML = body;
-    element.id = body;
-    document.querySelector("#playerlist-list").prepend(element)
+
+function displayplayer(usernamelist){
+    console.log(usernamelist)
+    for (let a in usernamelist){
+        if (!(document.querySelector("#playerlist").contains(document.querySelector("#"+a)))) {
+            let element = document.createElement("p");
+            element.innerHTML = a;
+            element.id = a;
+            document.querySelector("#playerlist-list").prepend(element)
+        }
+    };
+}
+socket.on("server-updateplayers", (body)=>{
+    displayplayer(body);
+});
+socket.on("give-connectedplayers", (body)=>{
+    displayplayer(body);
+});
+socket.on('server', (body)=>{
+    if (body["command"]=="movecursor") {
+        moveCursor(body["content"])
+    } else {
+        console.error("SOCKET ERROR: Command not recognised.")
+    }
 });
 
 socket.on('connect', () => {
@@ -59,14 +79,14 @@ function moveCursor(changePos){
     }
 }
 
-var detectOverlap = (function () {
+let detectOverlap = (function () {
 function getPositions(elem) {
-    var pos = elem.getBoundingClientRect();
+    let pos = elem.getBoundingClientRect();
     return [[pos.left, pos.right], [pos.top, pos.bottom]];
 }
 
 function comparePositions(p1, p2) {
-    var r1, r2;
+    let r1, r2;
     if (p1[0] < p2[0]) {
     r1 = p1;
     r2 = p2;
@@ -78,7 +98,7 @@ function comparePositions(p1, p2) {
 }
 
 return function (a, b) {
-    var pos1 = getPositions(a),
+    let pos1 = getPositions(a),
         pos2 = getPositions(b);
     return comparePositions(pos1[0], pos2[0]) && comparePositions(pos1[1], pos2[1]);
 };
