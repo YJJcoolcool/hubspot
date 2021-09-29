@@ -35,6 +35,11 @@ function displayplayer(usernamelist){
             document.querySelector("#playerlist-list").prepend(element)
         }
     };
+    $("#playerlist-list > p").each((index, elem) => {
+        if (!(elem.id in usernamelist)){
+            document.getElementById(elem.id).remove()
+        };
+      });
 }
 socket.on("server-updateplayers", (body)=>{
     displayplayer(body);
