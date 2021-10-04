@@ -1,5 +1,5 @@
 const formSubmitURL = window.location+"post"
-const socket = io.connect('http://localhost');
+const socket = io.connect('http://'+window.location.host);
 
 $(document).ready(function() 
 {
@@ -24,6 +24,9 @@ $(document).ready(function()
                     if (data==="1") {
                         document.querySelector("#error").innerHTML = "Sorry, that username is taken!";
                         document.querySelector("#error").style.display = "block";
+                    } else {
+                        sessionStorage.setItem("username",document.querySelector("#uname").value);
+                        window.location.href = window.location.href+"controller/trackpad";
                     }
                 },
                 error: function (obj, textStatus, errorThrown) {

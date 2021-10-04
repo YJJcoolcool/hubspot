@@ -5,6 +5,8 @@ const http = require("http").Server(app);
 const io = require("socket.io")(http);
 
 let connectedplayers = {};
+// Flush out any listed players
+io.emit('server-updateplayers',connectedplayers)
 
 console.log(__dirname)
 app.use(express.static(__dirname))

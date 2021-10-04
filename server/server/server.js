@@ -1,4 +1,5 @@
 let socket = io();
+let cursors = {};
 
 $(document).ready(function(){
     socket.emit('get-connectedplayers')
@@ -25,6 +26,7 @@ socket.on('server', (body)=>{
     }
 });
 
+// Function to create the player text element on screen
 function displayplayer(usernamelist){
     console.log(usernamelist)
     for (let a in usernamelist){
@@ -33,13 +35,14 @@ function displayplayer(usernamelist){
             element.innerHTML = a;
             element.id = a;
             document.querySelector("#playerlist-list").prepend(element)
+            cursors[a] = new Cursor(a);
         }
     };
     $("#playerlist-list > p").each((index, elem) => {
         if (!(elem.id in usernamelist)){
             document.getElementById(elem.id).remove()
         };
-      });
+    });
 }
 socket.on("server-updateplayers", (body)=>{
     displayplayer(body);
@@ -108,3 +111,18 @@ return function (a, b) {
     return comparePositions(pos1[0], pos2[0]) && comparePositions(pos1[1], pos2[1]);
 };
 })();
+
+class Cursor{
+    constructor(username){
+        this.username = username;
+        this.element = document.createElement("div");
+        this.element.style = "position: absolute; left:0px; top:0";
+        this.element.id = username;
+        this.element.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-up-left" width="44" height="44" viewBox="0 0 24 24" stroke-width="3" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="7" y1="7" x2="17" y2="17" /><polyline points="16 7 7 7 7 16" /></svg>';
+        document.body.appendChild(this.element);
+    }
+    move (x,y){
+        this.element.style.left = x;
+        this.element.style.top = y;
+    }
+}
