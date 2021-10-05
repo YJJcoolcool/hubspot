@@ -34,15 +34,21 @@ app.post('/client/post', (req,res)=>{
     }
     res.sendStatus(200)
 })
+
+// Put all socket connections here!
 io.on('connection', (socket) => {
     console.log("Device connected.")
     socket.on('get-connectedplayers', ()=>{
         io.emit('give-connectedplayers',connectedplayers)
     })
+    socket.on('moveCursor', (data) => {
+        io.emit('moveCursor',data)
+    })
 })
 io.on('controller-connect', (socket) => {
     console.log("A user connected.")
 })
+
 var server = http.listen(80, ()=>{
     console.log("Server is listening on port "+server.address().port)
 });

@@ -50,6 +50,9 @@ socket.on("server-updateplayers", (body)=>{
 socket.on("give-connectedplayers", (body)=>{
     displayplayer(body);
 });
+socket.on("moveCursor", (body)=>{
+    cursors[body[0]].move(body[1],body[2]);
+});
 socket.on('server', (body)=>{
     if (body["command"]=="movecursor") {
         moveCursor(body["content"])
@@ -61,31 +64,6 @@ socket.on('server', (body)=>{
 socket.on('connect', () => {
     console.log("Connected to backend server.")
 });
-
-pos=[20,80];
-
-function moveCursor(changePos){
-    pos=[pos[0]+parseInt(changePos[0]), pos[1]+parseInt(changePos[1])];
-    if (pos[0]<0){
-        pos[0]=0;
-    }
-    if (pos[1]<0){
-        pos[1]=0;
-    }
-    if (pos[0]>window.innerWidth-document.getElementById("mouse").clientWidth){
-        pos[0]=window.innerWidth-document.getElementById("mouse").clientWidth;
-    }
-    if (pos[1]>window.innerHeight-document.getElementById("mouse").clientHeight){
-        pos[1]=window.innerHeight-document.getElementById("mouse").clientHeight;
-    }
-    document.getElementById("mouse").style.left = pos[0]+"px";
-    document.getElementById("mouse").style.top = pos[1]+"px";
-    if (detectOverlap(document.getElementById("header"), document.getElementById("mouse"))){
-        document.getElementById("header").style.color="red";
-    } else {
-        document.getElementById("header").style.color="black";
-    }
-}
 
 let detectOverlap = (function () {
 function getPositions(elem) {
@@ -116,13 +94,17 @@ class Cursor{
     constructor(username){
         this.username = username;
         this.element = document.createElement("div");
+        this.X=0;
+        this.Y=0;
         this.element.style = "position: absolute; left:0px; top:0";
         this.element.id = username;
-        this.element.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-up-left" width="44" height="44" viewBox="0 0 24 24" stroke-width="3" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="7" y1="7" x2="17" y2="17" /><polyline points="16 7 7 7 7 16" /></svg>';
+        this.element.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-up-left" width="44" height="44" viewBox="0 0 24 24" stroke-width="3" stroke="#'+Math.floor(Math.random()*16777215).toString(16)+'" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="7" y1="7" x2="17" y2="17" /><polyline points="16 7 7 7 7 16" /></svg>';
         document.body.appendChild(this.element);
     }
     move (x,y){
-        this.element.style.left = x;
-        this.element.style.top = y;
+        this.X+=x;
+        this.Y+=y;
+        this.element.style.left = this.X+"px";
+        this.element.style.top = this.Y+"px";
     }
 }
